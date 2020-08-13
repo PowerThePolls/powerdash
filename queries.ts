@@ -17,7 +17,7 @@ export const queriesForSources = (rawSources: string): Query[] => {
   const sources = `(${rawSources
     .split(",")
     .map((source) => `'${source.trim()}'`)
-    .join(",")})`;
+    .join(",")})`.toLowerCase();
 
   const COUNTIES_QUERY = `
     SELECT (
@@ -31,7 +31,7 @@ export const queriesForSources = (rawSources: string): Query[] => {
       core_user.state as "state",
       count(distinct core_user.id) as "total"
     FROM core_user
-    WHERE source in ${sources}
+    WHERE lower(source) in ${sources}
     GROUP BY county, state
     ORDER BY state
   `;
@@ -48,7 +48,7 @@ export const queriesForSources = (rawSources: string): Query[] => {
       core_user.state as "state",
       count(distinct core_user.id) as "total"
     FROM core_user
-    WHERE source in ${sources}
+    WHERE lower(source) in ${sources}
     GROUP BY city, county, state
     ORDER BY state
   `;
@@ -56,7 +56,7 @@ export const queriesForSources = (rawSources: string): Query[] => {
     SELECT core_user.state as "state",
       count(distinct core_user.id) as "total"
     FROM core_user
-    WHERE source in ${sources}
+    WHERE lower(source) in ${sources}
     GROUP BY state
     ORDER BY state
   `;
@@ -65,7 +65,7 @@ export const queriesForSources = (rawSources: string): Query[] => {
     SELECT date_format(created_at, '%M %d, %Y') as "joined",
       count(distinct core_user.id) as "total"
     FROM core_user
-    WHERE source in ${sources}
+    WHERE lower(source) in ${sources}
     GROUP BY joined
     ORDER BY created_at DESC
   `;
@@ -74,7 +74,7 @@ export const queriesForSources = (rawSources: string): Query[] => {
     SELECT core_user.source as "source",
       count(distinct core_user.id) as "total"
     FROM core_user
-    WHERE source in ${sources}
+    WHERE lower(source) in ${sources}
     GROUP BY source
     ORDER BY total DESC
   `;
