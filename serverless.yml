@@ -1,0 +1,28 @@
+service: powerdash
+
+plugins:
+  - serverless-plugin-typescript
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    PTP_HOST: ${env:PTP_HOST}
+    PTP_DB: ${env:PTP_DB}
+    PTP_USER: ${env:PTP_USER}
+    PTP_PASS: ${env:PTP_PASS}
+    SECRET_KEY: ${env:SECRET_KEY}
+    BASE_SHEET: ${env:BASE_SHEET}
+
+functions:
+  updatePartner:
+    handler: handler.handleUpdatePartner
+    events:
+      - http:
+          path: sheet
+          method: post
+
+  updatePartners:
+    handler: handler.handleUpdatePartners
+    events:
+      - schedule: rate(1 hour)
