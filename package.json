@@ -18,5 +18,6 @@
     "prettier": "2.0.5",
     "serverless-plugin-typescript": "1.1.7",
     "tslint": "6.1.3"
-  }
+  },
+  "license": "MIT"
 }

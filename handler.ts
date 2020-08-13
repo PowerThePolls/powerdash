@@ -3,7 +3,12 @@ import { updateSheets, getRange } from "./googleSheets";
 import { queriesForSources } from "./queries";
 
 const isNotAuthorized = (event) =>
-  event.headers?.SECRET_KEY !== process.env.SECRET_KEY;
+  (event.headers || {})["Secret-Key"] !== process.env.SECRET_KEY;
+
+const returnData = (statusCode: number, message: string) => ({
+  statusCode,
+  body: JSON.stringify({ message }),
+});
 
 const updatePartner = async (
   sources: string,
@@ -15,7 +20,7 @@ const updatePartner = async (
 };
 
 const handleUpdatePartner = async (event) => {
-  if (isNotAuthorized(event)) return { statusCode: 500, body: "fail" };
+  if (isNotAuthorized(event)) return returnData(401, "fail");
 
   const { sources, sheetId } = JSON.parse(event.body);
 
@@ -23,7 +28,7 @@ const handleUpdatePartner = async (event) => {
     await updatePartner(sources, sheetId);
   }
 
-  return { statusCode: 200, body: "success" };
+  return returnData(200, "success");
 };
 
 const handleUpdatePartners = async (event) => {
@@ -41,7 +46,7 @@ const handleUpdatePartners = async (event) => {
       )
   );
 
-  return { statusCode: 200, body: "success" };
+  return returnData(200, "success");
 };
 
 module.exports = {
