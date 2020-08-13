@@ -3,7 +3,7 @@ import { updateSheets, getRange } from "./googleSheets";
 import { queriesForSources } from "./queries";
 
 const isNotAuthorized = (event) =>
-  (event.headers || {})["Secret-Key"] !== process.env.SECRET_KEY;
+  event.headers?.Authorization !== process.env.SECRET_KEY;
 
 const returnData = (statusCode: number, message: string) => ({
   statusCode,
@@ -20,7 +20,9 @@ const updatePartner = async (
 };
 
 const handleUpdatePartner = async (event) => {
-  if (isNotAuthorized(event)) return returnData(401, "fail");
+  if (isNotAuthorized(event)) {
+    return returnData(403, "fail");
+  }
 
   const { sources, sheetId } = JSON.parse(event.body);
 
@@ -38,13 +40,18 @@ const handleUpdatePartners = async (event) => {
       "'Partner Data Pages'!A2:E"
     )) || [];
 
-  await Promise.all(
-    sheets
-      .filter(([sheetId, _, sources]) => sheetId && sources)
-      .map(
-        async ([sheetId, _, sources]) => await updatePartner(sources, sheetId)
-      )
-  );
+  try {
+    await Promise.all(
+      sheets
+        .filter(([sheetId, _, sources]) => sheetId && sources)
+        .map(
+          async ([sheetId, _, sources]) => await updatePartner(sources, sheetId)
+        )
+    );
+  } catch (e) {
+    console.error(e)
+  }
+
 
   return returnData(200, "success");
 };
