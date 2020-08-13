@@ -1,6 +1,6 @@
-import { actionKit } from "./actionKit";
-import { updateSheets, getRange } from "./googleSheets";
-import { queriesForSources } from "./queries";
+import { actionKit } from "./src/actionKit";
+import { updateSheets, getRange } from "./src/googleSheets";
+import { queriesForSources } from "./src/queries";
 
 const isNotAuthorized = (event) =>
   event.headers?.Authorization !== process.env.SECRET_KEY;
