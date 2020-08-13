@@ -16,7 +16,9 @@ const updatePartner = async (
 ): Promise<void> => {
   const results = await actionKit(queriesForSources(sources));
 
-  return await updateSheets(results, sheetId);
+  await updateSheets(results, sheetId);
+
+  console.log(`Pushed "${sources}" to ${sheetId}`);
 };
 
 const handleUpdatePartner = async (event) => {
@@ -48,10 +50,16 @@ const handleUpdatePartners = async (event) => {
           async ([sheetId, _, sources]) => await updatePartner(sources, sheetId)
         )
     );
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error);
   }
 
+  console.log(
+    `Updated ${sheets
+      .filter(([sheetId, _, sources]) => sheetId && sources)
+      .map(([_, partner]) => partner)
+      .join(", ")}`
+  );
 
   return returnData(200, "success");
 };
