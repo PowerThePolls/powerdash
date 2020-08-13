@@ -23,7 +23,7 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v1.4.3
       with:
-        node-version: $(cat $GITHUB_WORKSPACE/.nvmrc)
+        node-version: 12
 
     - name: create service.json
       run: echo $SERVICE_JSON > $GITHUB_WORKSPACE/service.json
