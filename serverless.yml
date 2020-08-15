@@ -1,3 +1,5 @@
+org: powerthepolls
+app: powerdash
 service: powerdash
 
 plugins:
