@@ -43,8 +43,8 @@ const handleUpdatePartners = async (event) => {
       "'Partner Data Pages'!A2:E"
     )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
 
-  const interval = 10
-  const batchDivis = 60 / interval
+  const rate = 3
+  const interval = 60 / rate
   const now = Math.floor(new Date().getMinutes() / interval)
 
   try {
