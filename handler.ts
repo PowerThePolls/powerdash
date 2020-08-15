@@ -19,6 +19,7 @@ const updatePartner = async (
   const results = await actionKit(queriesForSources(sources, includePii));
 
   await updateSheets(results, sheetId);
+
   await notifySlack(
     `Updated \`${sources}\` <https://docs.google.com/spreadsheets/d/${sheetId}/edit|Partner Dashboard>`
   );

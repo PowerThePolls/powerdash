@@ -21,7 +21,9 @@ const updateSheets = async (
     !worksheets.find(({ title }) => title === Sheet.Signups)
   ) {
     const signupSheet = await createSignUpSheet(auth, spreadsheetId);
-    if (signupSheet) worksheets.push(signupSheet);
+    if (signupSheet) {
+      worksheets.push(signupSheet);
+    }
   }
 
   const requests = results.map((result: Result) =>
