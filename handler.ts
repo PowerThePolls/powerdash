@@ -30,7 +30,7 @@ const handleUpdatePartner = async (event) => {
   const { sources, sheetId, includePii } = JSON.parse(event.body);
 
   if (sources && sheetId) {
-    await updatePartner(sources, sheetId, includePii);
+    await updatePartner(sources, sheetId, includePii === 'Yes');
   }
 
   return returnData(200, "success");
