@@ -43,7 +43,7 @@ const handleUpdatePartners = async (event) => {
       "'Partner Data Pages'!A2:E"
     )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
 
-  const rate = 3
+  const rate = 5
   const interval = 60 / rate
   const now = Math.floor(new Date().getMinutes() / interval)
 
@@ -51,8 +51,8 @@ const handleUpdatePartners = async (event) => {
     await Promise.all(
       sheets
         .slice(
-          Math.floor(sheets.length/batchDivis * now),
-          Math.floor(sheets.length/batchDivis * (now + 1)),
+          Math.floor(sheets.length/rate * now),
+          Math.floor(sheets.length/rate * (now + 1)),
          )
         .map(
           async ([_, sources, includePii, sheetId]) =>
