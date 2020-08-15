@@ -1,16 +1,16 @@
 import { google } from "googleapis";
 import { Sheet } from "../queries";
 
-import getWorkSheets from "./getWorkSheets"
+import getWorkSheets from "./getWorkSheets";
 
 const sheets = google.sheets("v4");
 
 const createSignUpSheet = async (auth, destinationSpreadsheetId: string) => {
-  const templateSheet = process.env.TEMPALTE_PII
+  const templateSheet = process.env.TEMPALTE_PII || "";
 
   const [{ sheetId: baseSheetId }] = await getWorkSheets(auth, templateSheet);
 
-  if( !baseSheetId ) return null
+  if (!baseSheetId) return null;
 
   const { sheetId } = (
     await sheets.spreadsheets.sheets.copyTo({

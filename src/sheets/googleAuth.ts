@@ -10,4 +10,4 @@ const googleAuth = () =>
     ],
   });
 
-export default googleAuth
+export default googleAuth;

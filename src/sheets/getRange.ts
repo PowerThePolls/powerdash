@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 
-import googleAuth from "./googleAuth"
+import googleAuth from "./googleAuth";
 
 const sheets = google.sheets("v4");
 

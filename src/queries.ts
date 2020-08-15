@@ -16,7 +16,7 @@ export interface Query {
 
 export const queriesForSources = (
   rawSources: string,
-  includePii = false,
+  includePii = false
 ): Query[] => {
   const sources = `(${rawSources
     .split(",")

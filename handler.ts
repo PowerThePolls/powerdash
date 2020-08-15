@@ -1,6 +1,7 @@
 import { actionKit } from "./src/actionKit";
 import { updateSheets, getRange } from "./src/sheets";
 import { queriesForSources } from "./src/queries";
+import { notifySlack } from "./src/slack";
 
 const isNotAuthorized = (event) =>
   event.headers?.Authorization !== process.env.SECRET_KEY;
@@ -18,6 +19,9 @@ const updatePartner = async (
   const results = await actionKit(queriesForSources(sources, includePii));
 
   await updateSheets(results, sheetId);
+  await notifySlack(
+    `Updated \`${sources}\` <https://docs.google.com/spreadsheets/d/${sheetId}/edit|Partner Dashboard>`
+  );
 
   console.log(`Pushed "${sources}" to ${sheetId}`);
 };
@@ -30,7 +34,7 @@ const handleUpdatePartner = async (event) => {
   const { sources, sheetId, includePii } = JSON.parse(event.body);
 
   if (sources && sheetId) {
-    await updatePartner(sources, sheetId, includePii === 'Yes');
+    await updatePartner(sources, sheetId, includePii === "Yes");
   }
 
   return returnData(200, "success");
@@ -43,23 +47,20 @@ const handleUpdatePartners = async (event) => {
       "'Partner Data Pages'!A2:E"
     )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
 
-  const rate = 5
-  const interval = 60 / rate
-  const now = Math.floor(new Date().getMinutes() / interval)
+  const rate = 5;
+  const interval = 60 / rate;
+  const now = Math.floor(new Date().getMinutes() / interval);
 
   try {
     await Promise.all(
       sheets
         .slice(
-          Math.floor(sheets.length/rate * now),
-          Math.floor(sheets.length/rate * (now + 1)),
-         )
-        .map(
-          async ([_, sources, includePii, sheetId]) =>
-            {
-              await updatePartner(sources, sheetId, includePii === "Yes")
-            }
+          Math.floor((sheets.length / rate) * now),
+          Math.floor((sheets.length / rate) * (now + 1))
         )
+        .map(async ([_, sources, includePii, sheetId]) => {
+          await updatePartner(sources, sheetId, includePii === "Yes");
+        })
     );
   } catch (error) {
     console.error(error);

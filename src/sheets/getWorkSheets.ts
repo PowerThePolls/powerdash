@@ -14,11 +14,12 @@ const getWorkSheets = async (
 
   if (!result) return [];
 
-  return (result?.data?.sheets || [])
-    .map(({ properties: { title, sheetId } }) => ({
+  return (result?.data?.sheets || []).map(
+    ({ properties: { title, sheetId } }) => ({
       title: Sheet[title],
       sheetId,
-    }));
+    })
+  );
 };
 
 export default getWorkSheets;

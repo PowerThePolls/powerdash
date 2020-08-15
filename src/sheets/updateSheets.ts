@@ -2,9 +2,9 @@ import { google } from "googleapis";
 import { Result } from "../actionKit";
 import { Sheet } from "../queries";
 
-import createSignUpSheet from "./createSignUpSheet"
-import getWorkSheets from "./getWorkSheets"
-import googleAuth from "./googleAuth"
+import createSignUpSheet from "./createSignUpSheet";
+import getWorkSheets from "./getWorkSheets";
+import googleAuth from "./googleAuth";
 
 const sheets = google.sheets("v4");
 
@@ -21,7 +21,7 @@ const updateSheets = async (
     !worksheets.find(({ title }) => title === Sheet.Signups)
   ) {
     const signupSheet = await createSignUpSheet(auth, spreadsheetId);
-    signupSheet && worksheets.push(signupSheet);
+    if (signupSheet) worksheets.push(signupSheet);
   }
 
   const requests = results.map((result: Result) =>
@@ -50,9 +50,9 @@ const updateRequest = (
     updateCells: {
       rows: data.map((row) => ({
         values: row.map((col) => ({
-          userEnteredValue: (col || '-').toString().match(/[^0-9\.]/)
+          userEnteredValue: (col || "-").toString().match(/[^0-9\.]/)
             ? { stringValue: col }
-            : { numberValue: parseFloat(col) }
+            : { numberValue: parseFloat(col) },
         })),
       })),
       fields: "*",
