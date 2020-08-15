@@ -6,7 +6,7 @@ name: Deploy
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -17,33 +17,35 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v1.4.3
-      with:
-        node-version: 12
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.3
+        with:
+          node-version: 12
 
-    - name: create service.json
-      run: echo $SERVICE_JSON > $GITHUB_WORKSPACE/service.json
-      env:
-        SERVICE_JSON: ${{ secrets.SERVICE_JSON }}
+      - name: create service.json
+        run: echo $SERVICE_JSON > $GITHUB_WORKSPACE/service.json
+        env:
+          SERVICE_JSON: ${{ secrets.SERVICE_JSON }}
 
-    - name: npm install dependencies
-      run: npm install
+      - name: npm install dependencies
+        run: npm install
 
-    # Deploy to serverless
-    - name: Serverless
-      uses: serverless/github-action@v1.53.0
-      with:
-        args: deploy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        PTP_HOST: ${{ secrets.PTP_HOST }}
-        PTP_USER: ${{ secrets.PTP_USER }}
-        PTP_PASS: ${{ secrets.PTP_PASS }}
-        PTP_DB: ${{ secrets.PTP_DB }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        BASE_SHEET: ${{ secrets.BASE_SHEET }}
+      # Deploy to serverless
+      - name: Serverless
+        uses: serverless/github-action@v1.53.0
+        with:
+          args: deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PTP_HOST: ${{ secrets.PTP_HOST }}
+          PTP_USER: ${{ secrets.PTP_USER }}
+          PTP_PASS: ${{ secrets.PTP_PASS }}
+          PTP_DB: ${{ secrets.PTP_DB }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          BASE_SHEET: ${{ secrets.BASE_SHEET }}
+          TEMPLATE_BASE: ${{ secrets.TEMPLATE_BASE }}
+          TEMPALTE_PII: ${{ secrets.TEMPALTE_PII }}

@@ -13,6 +13,8 @@ provider:
     PTP_PASS: ${env:PTP_PASS}
     SECRET_KEY: ${env:SECRET_KEY}
     BASE_SHEET: ${env:BASE_SHEET}
+    TEMPLATE_BASE: ${env:TEMPLATE_BASE}
+    TEMPALTE_PII: ${env:TEMPALTE_PII}
 
 package:
   exclude:
@@ -31,4 +33,4 @@ functions:
   updatePartners:
     handler: handler.handleUpdatePartners
     events:
-      - schedule: rate(1 hour)
+      - schedule: rate(10 minutes)

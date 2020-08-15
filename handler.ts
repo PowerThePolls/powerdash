@@ -1,5 +1,5 @@
 import { actionKit } from "./src/actionKit";
-import { updateSheets, getRange } from "./src/googleSheets";
+import { updateSheets, getRange } from "./src/sheets";
 import { queriesForSources } from "./src/queries";
 
 const isNotAuthorized = (event) =>
@@ -12,9 +12,10 @@ const returnData = (statusCode: number, message: string) => ({
 
 const updatePartner = async (
   sources: string,
-  sheetId: string
+  sheetId: string,
+  includePii: boolean
 ): Promise<void> => {
-  const results = await actionKit(queriesForSources(sources));
+  const results = await actionKit(queriesForSources(sources, includePii));
 
   await updateSheets(results, sheetId);
 
@@ -26,10 +27,10 @@ const handleUpdatePartner = async (event) => {
     return returnData(403, "fail");
   }
 
-  const { sources, sheetId } = JSON.parse(event.body);
+  const { sources, sheetId, includePii } = JSON.parse(event.body);
 
   if (sources && sheetId) {
-    await updatePartner(sources, sheetId);
+    await updatePartner(sources, sheetId, includePii);
   }
 
   return returnData(200, "success");
@@ -40,14 +41,24 @@ const handleUpdatePartners = async (event) => {
     (await getRange(
       process.env.BASE_SHEET || "",
       "'Partner Data Pages'!A2:E"
-    )) || [];
+    )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
+
+  const interval = 10
+  const batchDivis = 60 / interval
+  const now = Math.floor(new Date().getMinutes() / interval)
 
   try {
     await Promise.all(
       sheets
-        .filter(([sheetId, _, sources]) => sheetId && sources)
+        .slice(
+          Math.floor(sheets.length/batchDivis * now),
+          Math.floor(sheets.length/batchDivis * (now + 1)),
+         )
         .map(
-          async ([sheetId, _, sources]) => await updatePartner(sources, sheetId)
+          async ([_, sources, includePii, sheetId]) =>
+            {
+              await updatePartner(sources, sheetId, includePii === "Yes")
+            }
         )
     );
   } catch (error) {

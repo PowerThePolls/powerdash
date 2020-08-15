@@ -31,10 +31,14 @@ export const actionKit = async (queries: Query[]) => {
   if (totals && sources) {
     totals.data.unshift([
       sources.data
-        .reduce((total, [_, srcTotal]) => parseInt(srcTotal, 10) + total, 0)
+        .reduce((total, [_, srcTotal]) => parseFloat(srcTotal) + total, 0)
         .toString(),
     ]);
-    totals.data.push([new Date().toUTCString()]);
+    totals.data.push([
+      `${new Date().toLocaleString("en-US", {
+        timeZone: "America/New_York",
+      })} ET`,
+    ]);
   }
 
   return data;
