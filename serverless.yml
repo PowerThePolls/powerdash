@@ -1,5 +1,3 @@
-org: powerthepolls
-app: powerdash
 service: powerdash
 
 plugins:
@@ -8,7 +6,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  timeout: 600
+  timeout: 270
   environment:
     PTP_HOST: ${env:PTP_HOST}
     PTP_DB: ${env:PTP_DB}
