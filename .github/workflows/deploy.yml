@@ -49,3 +49,4 @@ jobs:
           BASE_SHEET: ${{ secrets.BASE_SHEET }}
           TEMPLATE_BASE: ${{ secrets.TEMPLATE_BASE }}
           TEMPALTE_PII: ${{ secrets.TEMPALTE_PII }}
+          SLACK_HOOK: ${{ secrets.SLACK_HOOK }}
