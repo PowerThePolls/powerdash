@@ -17,6 +17,8 @@ provider:
     TEMPLATE_BASE: ${env:TEMPLATE_BASE}
     TEMPALTE_PII: ${env:TEMPALTE_PII}
     SLACK_HOOK: ${env:SLACK_HOOK}
+    SS_AUTH_ID: ${env:SS_AUTH_ID}
+    SS_AUTH_TOKEN: ${env:SS_AUTH_TOKEN}
 
 package:
   exclude:
@@ -25,6 +27,14 @@ package:
     - service.json
 
 functions:
+  getZip:
+    handler: handler.handleGetZip
+    events:
+      - http:
+          path: zip
+          method: get
+          cors: true
+
   updatePartner:
     handler: handler.handleUpdatePartner
     events:

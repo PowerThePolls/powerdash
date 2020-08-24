@@ -2,13 +2,15 @@ import { actionKit } from "./src/actionKit";
 import { updateSheets, getRange } from "./src/sheets";
 import { queriesForSources } from "./src/queries";
 import { notifySlack } from "./src/slack";
+import { getZip } from "./src/smartyStreet";
 
 const isNotAuthorized = (event) =>
   event.headers?.Authorization !== process.env.SECRET_KEY;
 
-const returnData = (statusCode: number, message: string) => ({
+const returnData = (statusCode: number, message: string, headers={}) => ({
   statusCode,
   body: JSON.stringify({ message }),
+  headers
 });
 
 const updatePartner = async (
@@ -77,7 +79,22 @@ const handleUpdatePartners = async (event) => {
   return returnData(200, "success");
 };
 
+const handleGetZip = async (event) => {
+  const { zipcode } = event.queryStringParameters;
+
+  return returnData(
+    200,
+    await getZip(zipcode),
+    {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
+  )
+}
+
+
 module.exports = {
   handleUpdatePartner,
   handleUpdatePartners,
+  handleGetZip
 };
