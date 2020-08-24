@@ -7,10 +7,9 @@ import { getZip } from "./src/smartyStreet";
 const isNotAuthorized = (event) =>
   event.headers?.Authorization !== process.env.SECRET_KEY;
 
-const returnData = (statusCode: number, message: string, headers={}) => ({
+const returnData = (statusCode: number, message: string) => ({
   statusCode,
   body: JSON.stringify({ message }),
-  headers
 });
 
 const updatePartner = async (
@@ -81,20 +80,20 @@ const handleUpdatePartners = async (event) => {
 
 const handleGetZip = async (event) => {
   const { zipcode } = event.queryStringParameters;
+  const { body, statusCode } = await getZip(zipcode);
 
-  return returnData(
-    200,
-    await getZip(zipcode),
-    {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
+  return {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
     },
-  )
-}
-
+    body,
+    statusCode
+  };
+};
 
 module.exports = {
   handleUpdatePartner,
   handleUpdatePartners,
-  handleGetZip
+  handleGetZip,
 };
