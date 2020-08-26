@@ -73,7 +73,7 @@ export const queriesForSources = (
   `;
 
   const SOURCES_QUERY = `
-    SELECT core_user.source as "source",
+    SELECT lower(core_user.source) as "source",
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}

@@ -16,16 +16,16 @@ const updateSheets = async (
 
   const worksheets = await getWorkSheets(auth, spreadsheetId);
 
-  // Disable PII Sync
-  // if (
-  //   results.find(({ sheet }) => sheet === Sheet.Signups) &&
-  //   !worksheets.find(({ title }) => title === Sheet.Signups)
-  // ) {
-  //   const signupSheet = await createSignUpSheet(auth, spreadsheetId);
-  //   if (signupSheet) {
-  //     worksheets.push(signupSheet);
-  //   }
-  // }
+
+  if (
+    results.find(({ sheet }) => sheet === Sheet.Signups) &&
+    !worksheets.find(({ title }) => title === Sheet.Signups)
+  ) {
+    const signupSheet = await createSignUpSheet(auth, spreadsheetId);
+    if (signupSheet) {
+      worksheets.push(signupSheet);
+    }
+  }
 
   const requests = results.map((result: Result) =>
     updateRequest(worksheets, result)
