@@ -1,7 +1,7 @@
 import { actionKit } from "./src/actionKit";
 import { updateSheets, getRange } from "./src/sheets";
 import { queriesForSources } from "./src/queries";
-import { notifySlack } from "./src/slack";
+import { notifySlack, errorSlack } from "./src/slack";
 import { getZip } from "./src/smartyStreet";
 
 const isNotAuthorized = (event) =>
@@ -19,13 +19,24 @@ const updatePartner = async (
 ): Promise<void> => {
   const results = await actionKit(queriesForSources(sources, includePii));
 
-  await updateSheets(results, sheetId);
+  try {
+    await updateSheets(results, sheetId);
+    await notifySlack(
+      `Updated \`${sources}\` <https://docs.google.com/spreadsheets/d/${sheetId}/edit|Partner Dashboard>`
+    );
 
-  await notifySlack(
-    `Updated \`${sources}\` <https://docs.google.com/spreadsheets/d/${sheetId}/edit|Partner Dashboard>`
-  );
+    console.log(`Pushed "${sources}" to ${sheetId}`);
+  } catch (error) {
+    const errored = error.errors ? error.errors : error;
 
-  console.log(`Pushed "${sources}" to ${sheetId}`);
+    errorSlack(
+      `\`${sources}\` hit an exception \`\`\`\n${JSON.stringify(
+        errored
+      )}\n\`\`\``
+    );
+
+    throw error;
+  }
 };
 
 const handleUpdatePartner = async (event) => {
@@ -88,7 +99,7 @@ const handleGetZip = async (event) => {
       "Access-Control-Allow-Credentials": true,
     },
     body,
-    statusCode
+    statusCode,
   };
 };
 

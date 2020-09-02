@@ -17,5 +17,5 @@ export const getZip = async (zipcode: string) => {
 
   const body = await resp.text();
 
-  return { body, statusCode }
+  return { body, statusCode };
 };

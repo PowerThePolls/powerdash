@@ -16,7 +16,6 @@ const updateSheets = async (
 
   const worksheets = await getWorkSheets(auth, spreadsheetId);
 
-
   if (
     results.find(({ sheet }) => sheet === Sheet.Signups) &&
     !worksheets.find(({ title }) => title === Sheet.Signups)
