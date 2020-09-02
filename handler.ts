@@ -27,7 +27,9 @@ const updatePartner = async (
 
     console.log(`Pushed "${sources}" to ${sheetId}`);
   } catch (error) {
-    const errored = error.errors ? error.errors : error;
+    const errored = error.errors ? error.errors : "Too large";
+
+    console.error(error)
 
     errorSlack(
       `\`${sources}\` hit an exception \`\`\`\n${JSON.stringify(
@@ -60,8 +62,8 @@ const handleUpdatePartners = async (event) => {
       "'Partner Data Pages'!A2:E"
     )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
 
-  const rate = 5;
-  const interval = 60 / rate;
+  const rate = 10;
+  const interval = 240 / rate;
   const now = Math.floor(new Date().getMinutes() / interval);
 
   try {
