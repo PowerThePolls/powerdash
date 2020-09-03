@@ -66,7 +66,7 @@ const handleUpdatePartners = async (event) => {
   const rate = 10;
   const interval = 60 / rate;
   const now = Math.floor(new Date().getMinutes() / interval);
-  const batchSize = sheets.length / rate;
+  const batchSize = Math.ceil(sheets.length / rate);
   const success = [];
   const errors = [];
 
@@ -75,9 +75,9 @@ const handleUpdatePartners = async (event) => {
     Math.floor(batchSize * (now + 1))
   );
 
-  console.log(`Sending batch ${now}/#${interval} with size of ${batchSize}`);
+  console.log(`Sending batch ${now}/${interval} with size of ${batchSize}`);
 
-  for (item of batches) {
+  for (const item of batch) {
     const [_, sources, includePii, sheetId] = item;
 
     try {
@@ -92,8 +92,8 @@ const handleUpdatePartners = async (event) => {
   }
 
   notifySlack(
-    `Updated \`${success.join("`,`")}\`${
-      errors.length > 0 ? `\n\nFailed to updated \`${errors.join("`,`")}\`` : ""
+    `Updated \`${success.join("`, `")}\`${
+      errors.length > 0 ? `\n\nFailed to updated \`${errors.join("`, `")}\`` : ""
     }`
   );
 
