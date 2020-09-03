@@ -6,7 +6,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  timeout: 270
+  timeout: 600
   environment:
     PTP_HOST: ${env:PTP_HOST}
     PTP_DB: ${env:PTP_DB}

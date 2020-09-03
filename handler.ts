@@ -21,9 +21,6 @@ const updatePartner = async (
 
   try {
     await updateSheets(results, sheetId);
-    await notifySlack(
-      `Updated \`${sources}\` <https://docs.google.com/spreadsheets/d/${sheetId}/edit|Partner Dashboard>`
-    );
 
     console.log(`Pushed "${sources}" to ${sheetId}`);
   } catch (error) {
@@ -50,6 +47,10 @@ const handleUpdatePartner = async (event) => {
 
   if (sources && sheetId) {
     await updatePartner(sources, sheetId, includePii === "Yes");
+
+    await notifySlack(
+      `Updated \`${sources}\` <https://docs.google.com/spreadsheets/d/${sheetId}/edit|Partner Dashboard>`
+    );
   }
 
   return returnData(200, "success");
@@ -63,29 +64,35 @@ const handleUpdatePartners = async (event) => {
     )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
 
   const rate = 10;
-  const interval = 240 / rate;
+  const interval = 60 / rate;
   const now = Math.floor(new Date().getMinutes() / interval);
+  const batchSize = sheets.length / rate;
+  const success = [];
+  const errors = [];
 
-  try {
-    await Promise.all(
-      sheets
-        .slice(
-          Math.floor((sheets.length / rate) * now),
-          Math.floor((sheets.length / rate) * (now + 1))
-        )
-        .map(async ([_, sources, includePii, sheetId]) => {
-          await updatePartner(sources, sheetId, includePii === "Yes");
-        })
-    );
-  } catch (error) {
-    console.error(error);
+  const batch = sheets.slice(
+    Math.floor((batchSize) * now),
+    Math.floor((batchSize) * (now + 1))
+  )
+
+  console.log(`Sending batch ${now}/#${interval} with size of ${batchSize}`)
+
+  for (var i = 0; i < batch.length; ++i) {
+    const [_, sources, includePii, sheetId] = batch[i];
+
+    try {
+      await updatePartner(sources, sheetId, includePii === "Yes")
+      await (new Promise((accept) => setTimeout(accept, 5_000)))
+      success.push(sources)
+    } catch (error) {
+      console.error(error);
+      await (new Promise((accept) => setTimeout(accept, 30_000)))
+      errors.push(sources)
+    }
   }
 
-  console.log(
-    `Updated ${sheets
-      .filter(([sheetId, _, sources]) => sheetId && sources)
-      .map(([_, partner]) => partner)
-      .join(", ")}`
+  notifySlack(
+    `Updated \`${success.join("`,`")}\` and failed to updated \`${errors.join("`,`")}\``
   );
 
   return returnData(200, "success");
