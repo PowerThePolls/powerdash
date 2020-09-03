@@ -26,10 +26,10 @@ const updatePartner = async (
   } catch (error) {
     const errored = error.errors ? error.errors : "Too large";
 
-    console.error(error)
+    console.error(error);
 
     errorSlack(
-      `\`${sources}\` hit an exception \`\`\`\n${JSON.stringify(
+      `\`${sources}\` hit an exception updating <https://docs.google.com/spreadsheets/d/${sheetId}/edit|this sheet> \n\n\`\`\`\n${JSON.stringify(
         errored
       )}\n\`\`\``
     );
@@ -71,28 +71,30 @@ const handleUpdatePartners = async (event) => {
   const errors = [];
 
   const batch = sheets.slice(
-    Math.floor((batchSize) * now),
-    Math.floor((batchSize) * (now + 1))
-  )
+    Math.floor(batchSize * now),
+    Math.floor(batchSize * (now + 1))
+  );
 
-  console.log(`Sending batch ${now}/#${interval} with size of ${batchSize}`)
+  console.log(`Sending batch ${now}/#${interval} with size of ${batchSize}`);
 
-  for (var i = 0; i < batch.length; ++i) {
-    const [_, sources, includePii, sheetId] = batch[i];
+  for (item of batches) {
+    const [_, sources, includePii, sheetId] = item;
 
     try {
-      await updatePartner(sources, sheetId, includePii === "Yes")
-      await (new Promise((accept) => setTimeout(accept, 5_000)))
-      success.push(sources)
+      await updatePartner(sources, sheetId, includePii === "Yes");
+      await new Promise((accept) => setTimeout(accept, 5_000));
+      success.push(sources);
     } catch (error) {
       console.error(error);
-      await (new Promise((accept) => setTimeout(accept, 30_000)))
-      errors.push(sources)
+      await new Promise((accept) => setTimeout(accept, 30_000));
+      errors.push(sources);
     }
   }
 
   notifySlack(
-    `Updated \`${success.join("`,`")}\` and failed to updated \`${errors.join("`,`")}\``
+    `Updated \`${success.join("`,`")}\`${
+      errors.length > 0 ? `\n\nFailed to updated \`${errors.join("`,`")}\`` : ""
+    }`
   );
 
   return returnData(200, "success");
