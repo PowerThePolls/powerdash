@@ -64,7 +64,7 @@ export const queriesForSources = (
   `;
 
   const DATES_QUERY = `
-    SELECT date_format(created_at, '%M %d, %Y') as "joined",
+    SELECT date_format(convert_tz(core_user.created_at, 'GMT', 'US/Eastern'), '%M %d, %Y') as "joined",
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}
