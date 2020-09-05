@@ -65,9 +65,8 @@ const handleUpdatePartners = async (event) => {
 
   const rate = 10;
   const interval = 60;
-  const count = interval / rate;
-  const now = Math.floor(new Date().getMinutes() / interval * count);
-  const batchSize = Math.ceil(sheets.length / count);
+  const now = Math.floor(new Date().getMinutes() / rate);
+  const batchSize = Math.ceil(sheets.length * interval / rate);
   const success = [];
   const errors = [];
 
