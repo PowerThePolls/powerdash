@@ -61,7 +61,9 @@ const handleUpdatePartners = async (event) => {
     (await getRange(
       process.env.BASE_SHEET || "",
       "'Partner Data Pages'!A2:E"
-    )) || [].filter(([_, sources, __, sheetId]) => sheetId && sources);
+    )) || [].filter(([_, sources, __, sheetId]) =>
+    ((sheetId || '').length > 0 && (sources || '').length > 0)
+  );
 
   const rate = 10;
   const interval = 60;
@@ -83,11 +85,11 @@ const handleUpdatePartners = async (event) => {
 
     try {
       await updatePartner(sources, sheetId, includePii === "Yes");
-      await new Promise((accept) => setTimeout(accept, 5_000));
+      await new Promise((accept) => setTimeout(accept, 7_500));
       success.push(sources);
     } catch (error) {
       console.error(error);
-      await new Promise((accept) => setTimeout(accept, 30_000));
+      await new Promise((accept) => setTimeout(accept, 45_000));
       errors.push(sources);
     }
   }
