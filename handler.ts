@@ -57,18 +57,20 @@ const handleUpdatePartner = async (event) => {
 };
 
 const handleUpdatePartners = async (event) => {
-  const sheets =
+  const sheets = (
     (await getRange(
       process.env.BASE_SHEET || "",
       "'Partner Data Pages'!A2:E"
-    )) || [].filter(([_, sources, __, sheetId]) =>
-    ((sheetId || '').length > 0 && (sources || '').length > 0)
+    )) || []
+  ).filter(
+    ([_, sources, __, sheetId]) =>
+      (sheetId || "").length > 0 && (sources || "").length > 0
   );
 
   const rate = 10;
   const interval = 60;
   const count = interval / rate;
-  const now = Math.floor(new Date().getMinutes() / interval * count);
+  const now = Math.floor((new Date().getMinutes() / interval) * count);
   const batchSize = Math.ceil(sheets.length / count);
   const success = [];
   const errors = [];
@@ -96,7 +98,9 @@ const handleUpdatePartners = async (event) => {
 
   notifySlack(
     `Updated \`${success.join("`, `")}\`${
-      errors.length > 0 ? `\n\nFailed to updated \`${errors.join("`, `")}\`` : ""
+      errors.length > 0
+        ? `\n\nFailed to updated \`${errors.join("`, `")}\``
+        : ""
     }`
   );
 
