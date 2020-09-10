@@ -68,9 +68,12 @@ const handleUpdatePartners = async (event) => {
   );
 
   const rate = 10;
-  const interval = 60;
+  const interval = 120;
   const count = interval / rate;
-  const now = Math.floor((new Date().getMinutes() / interval) * count);
+  const today = new Date();
+  const now = Math.floor(
+    ((today.getMinutes() + 60 * (today.getHours() % Math.floor(interval/60))) / interval) * count
+  );
   const batchSize = Math.ceil(sheets.length / count);
   const success = [];
   const errors = [];
@@ -91,7 +94,7 @@ const handleUpdatePartners = async (event) => {
       success.push(sources);
     } catch (error) {
       console.error(error);
-      await new Promise((accept) => setTimeout(accept, 45_000));
+      await new Promise((accept) => setTimeout(accept, 100_000));
       errors.push(sources);
     }
   }
