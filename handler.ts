@@ -131,14 +131,14 @@ const handleGetZip = async (event) => {
 const sendElectMail = async (event) => {
   const { jurisdictionId, ...data } = JSON.parse(event.body);
   let statusCode = 200;
-  let body = { message: "success" };
+  let message = 'Message sent'
 
   try {
     await sendElectAdmin(jurisdictionId, data);
   } catch (e) {
     console.error(e);
+    message = 'Could not send'
     statusCode = 422;
-    body = { message: "error" };
   }
 
   return {
@@ -146,7 +146,7 @@ const sendElectMail = async (event) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     },
-    body,
+    body: JSON.stringify({ message }),
     statusCode,
   };
 };
