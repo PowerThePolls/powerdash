@@ -69,7 +69,7 @@ const handleUpdatePartners = async (event) => {
   );
 
   const rate = 10;
-  const interval = 120;
+  const interval = 300;
   const count = interval / rate;
   const today = new Date();
   const now = Math.floor(
@@ -87,14 +87,14 @@ const handleUpdatePartners = async (event) => {
     Math.floor(batchSize * (now + 1))
   );
 
-  console.log(`Sending batch ${now}/${interval} with size of ${batchSize}`);
+  console.log(`Sending batch ${now}/${count} with size of ${batchSize}`);
 
   for (const item of batch) {
     const [_, sources, includePii, sheetId] = item;
 
     try {
       await updatePartner(sources, sheetId, includePii === "Yes");
-      await new Promise((accept) => setTimeout(accept, 7_500));
+      await new Promise((accept) => setTimeout(accept, 10_00));
       success.push(sources);
     } catch (error) {
       console.error(error);
