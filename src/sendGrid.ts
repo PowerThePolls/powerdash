@@ -12,11 +12,7 @@ const getElectEmail = async (jurisdiction) => {
   return "srduncombe@gmail.com";
 };
 
-export const sendElectAdmin = async (
-  jurisdiction,
-  from,
-  dynamicTemplateData
-) => {
+export const sendElectAdmin = async (jurisdiction, dynamicTemplateData) => {
   const to = await getElectEmail(jurisdiction);
   const from = "no-reply@powerthepolls.org";
 

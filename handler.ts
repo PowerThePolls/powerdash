@@ -134,7 +134,7 @@ const sendElectMail = async (event) => {
   let body = { message: "success" };
 
   try {
-    await sendElectAdmin(jurisdictionId, email, data);
+    await sendElectAdmin(jurisdictionId, data);
   } catch (e) {
     console.error(e);
     statusCode = 422;
