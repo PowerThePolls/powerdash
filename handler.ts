@@ -3,6 +3,7 @@ import { updateSheets, getRange } from "./src/sheets";
 import { queriesForSources } from "./src/queries";
 import { notifySlack, errorSlack } from "./src/slack";
 import { getZip } from "./src/smartyStreet";
+import { sendElectAdmin } from "./src/sendGrid";
 
 const isNotAuthorized = (event) =>
   event.headers?.Authorization !== process.env.SECRET_KEY;
@@ -72,7 +73,10 @@ const handleUpdatePartners = async (event) => {
   const count = interval / rate;
   const today = new Date();
   const now = Math.floor(
-    ((today.getMinutes() + 60 * (today.getHours() % Math.floor(interval/60))) / interval) * count
+    ((today.getMinutes() +
+      60 * (today.getHours() % Math.floor(interval / 60))) /
+      interval) *
+      count
   );
   const batchSize = Math.ceil(sheets.length / count);
   const success = [];
@@ -124,8 +128,32 @@ const handleGetZip = async (event) => {
   };
 };
 
+const sendElectMail = async (event) => {
+  const { jurisdictionId, ...data } = JSON.parse(event.body);
+  let statusCode = 200;
+  let body = { message: "success" };
+
+  try {
+    await sendElectAdmin(jurisdictionId, email, data);
+  } catch (e) {
+    console.error(e);
+    statusCode = 422;
+    body = { message: "error" };
+  }
+
+  return {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
+    body,
+    statusCode,
+  };
+};
+
 module.exports = {
   handleUpdatePartner,
   handleUpdatePartners,
   handleGetZip,
+  sendElectMail,
 };
