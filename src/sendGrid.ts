@@ -9,7 +9,7 @@ const getElectEmail = async (jurisdiction) => {
   );
   const { email } = await resp.json();
 
-  return "srduncombe@gmail.com";
+  return email;
 };
 
 export const sendElectAdmin = async (jurisdiction, dynamicTemplateData) => {
