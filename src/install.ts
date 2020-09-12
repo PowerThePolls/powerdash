@@ -5,8 +5,8 @@ import * as AWS from "aws-sdk";
 
 AWS.config.update({
   region: 'us-east-1',
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+  accessKeyId: process.env.SRC_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.SRC_AWS_SECRET_KEY,
 });
 
 const s3 = new AWS.S3();
