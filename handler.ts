@@ -4,6 +4,7 @@ import { queriesForSources } from "./src/queries";
 import { notifySlack, errorSlack } from "./src/slack";
 import { getZip } from "./src/smartyStreet";
 import { sendElectAdmin } from "./src/sendGrid";
+import { installLatest } from "./src/install";
 
 const isNotAuthorized = (event) =>
   event.headers?.Authorization !== process.env.SECRET_KEY;
@@ -151,9 +152,14 @@ const sendElectMail = async (event) => {
   };
 };
 
+const publishPackage = async (event) => {
+  await installLatest()
+}
+
 module.exports = {
   handleUpdatePartner,
   handleUpdatePartners,
   handleGetZip,
   sendElectMail,
+  publishPackage,
 };
