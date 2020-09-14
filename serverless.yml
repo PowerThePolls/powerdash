@@ -2,6 +2,7 @@ service: powerdash
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-iam-roles-per-function
 
 provider:
   name: aws
@@ -21,8 +22,6 @@ provider:
     SS_AUTH_ID: ${env:SS_AUTH_ID}
     SS_AUTH_TOKEN: ${env:SS_AUTH_TOKEN}
     SENDGRID_API_KEY: ${env:SENDGRID_API_KEY}
-    S3_AWS_ACCESS_KEY: ${env:S3_AWS_ACCESS_KEY}
-    S3_AWS_SECRET_KEY: ${env:S3_AWS_SECRET_KEY}
 
 package:
   exclude:
@@ -61,3 +60,10 @@ functions:
 
   publishPackage:
     handler: handler.publishPackage
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - "s3:*"
+          - "cloudfront:*"
+        Resource:
+          - "*"

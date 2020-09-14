@@ -95,12 +95,12 @@ const handleUpdatePartners = async (event) => {
 
     try {
       await updatePartner(sources, sheetId, includePii === "Yes");
-      await new Promise((accept) => setTimeout(accept, 10_00));
-      success.push(sources);
+      await new Promise((accept) => setTimeout(accept, 10_000));
+      if( sources ) success.push(sources);
     } catch (error) {
       console.error(error);
       await new Promise((accept) => setTimeout(accept, 100_000));
-      errors.push(sources);
+      if( sources ) errors.push(sources);
     }
   }
 
@@ -132,13 +132,13 @@ const handleGetZip = async (event) => {
 const sendElectMail = async (event) => {
   const { jurisdictionId, ...data } = JSON.parse(event.body);
   let statusCode = 200;
-  let message = 'Message sent'
+  let message = "Message sent";
 
   try {
     await sendElectAdmin(jurisdictionId, data);
   } catch (e) {
     console.error(e);
-    message = 'Could not send'
+    message = "Could not send";
     statusCode = 422;
   }
 
@@ -153,8 +153,8 @@ const sendElectMail = async (event) => {
 };
 
 const publishPackage = async (event) => {
-  await installLatest()
-}
+  await installLatest();
+};
 
 module.exports = {
   handleUpdatePartner,
