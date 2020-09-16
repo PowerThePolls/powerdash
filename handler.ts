@@ -3,7 +3,7 @@ import { updateSheets, getRange } from "./src/sheets";
 import { queriesForSources } from "./src/queries";
 import { notifySlack, errorSlack } from "./src/slack";
 import { getZip } from "./src/smartyStreet";
-import { sendElectAdmin } from "./src/sendGrid";
+import { sendElectAdmin } from "./src/mailGun";
 import { installLatest } from "./src/install";
 
 const isNotAuthorized = (event) =>
@@ -96,11 +96,11 @@ const handleUpdatePartners = async (event) => {
     try {
       await updatePartner(sources, sheetId, includePii === "Yes");
       await new Promise((accept) => setTimeout(accept, 10_000));
-      if( sources ) success.push(sources);
+      if (sources) success.push(sources);
     } catch (error) {
       console.error(error);
       await new Promise((accept) => setTimeout(accept, 100_000));
-      if( sources ) errors.push(sources);
+      if (sources) errors.push(sources);
     }
   }
 

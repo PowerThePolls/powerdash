@@ -21,7 +21,7 @@ provider:
     ERROR_SLACK_HOOK: ${env:ERROR_SLACK_HOOK}
     SS_AUTH_ID: ${env:SS_AUTH_ID}
     SS_AUTH_TOKEN: ${env:SS_AUTH_TOKEN}
-    SENDGRID_API_KEY: ${env:SENDGRID_API_KEY}
+    MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
 
 package:
   exclude:
