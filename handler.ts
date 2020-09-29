@@ -70,7 +70,7 @@ const handleUpdatePartners = async (event) => {
   );
 
   const rate = 10;
-  const interval = 300;
+  const interval = 360;
   const count = interval / rate;
   const today = new Date();
   const now = Math.floor(
