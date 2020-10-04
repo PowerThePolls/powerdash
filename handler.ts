@@ -123,6 +123,7 @@ const handleGetZip = async (event) => {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
+      "Cache-Control": "max-age=1314000, s-maxage=1314000, immutable, public",
     },
     body,
     statusCode,
