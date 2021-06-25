@@ -16,7 +16,7 @@ const RAW_PATH = `https://unpkg.com/${FOLDER_LOC}`;
 const BUCKET = "src.powerthepolls.org";
 const BUCKET_FOLDER = "assets/scripts/power-the-polls-form";
 
-const DISTRIBUTION_ID = "EPB6EAXTIDCWA";
+const DISTRIBUTION_ID = "EHG1Q8TS38IDS";
 
 const uploadFile = (fileName, blob) =>
   new Promise((resolve, reject) => {
