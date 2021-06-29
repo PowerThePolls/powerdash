@@ -1,3 +1,5 @@
+const CUTOFF_DATE = `2021-07-01`;
+
 export enum Sheet {
   Cities = "Cities",
   Counties = "Counties",
@@ -35,6 +37,12 @@ export const queriesForSources = (
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}
+     AND (
+      SELECT max(created_at)
+      FROM core_action
+      WHERE core_action.status = 'complete'
+        AND core_action.user_id = core_user.id
+     ) > TIMESTAMP('${CUTOFF_DATE}')
     GROUP BY county, state
     ORDER BY state
   `;
@@ -51,6 +59,12 @@ export const queriesForSources = (
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}
+     AND (
+      SELECT max(created_at)
+      FROM core_action
+      WHERE core_action.status = 'complete'
+        AND core_action.user_id = core_user.id
+     ) > TIMESTAMP('${CUTOFF_DATE}')
     GROUP BY city, county, state
     ORDER BY state
   `;
@@ -59,6 +73,12 @@ export const queriesForSources = (
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}
+     AND (
+      SELECT max(created_at)
+      FROM core_action
+      WHERE core_action.status = 'complete'
+        AND core_action.user_id = core_user.id
+     ) > TIMESTAMP('${CUTOFF_DATE}')
     GROUP BY state
     ORDER BY state
   `;
@@ -68,6 +88,12 @@ export const queriesForSources = (
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}
+     AND (
+      SELECT max(created_at)
+      FROM core_action
+      WHERE core_action.status = 'complete'
+        AND core_action.user_id = core_user.id
+     ) > TIMESTAMP('${CUTOFF_DATE}')
     GROUP BY joined
     ORDER BY created_at DESC
   `;
@@ -77,6 +103,12 @@ export const queriesForSources = (
       count(distinct core_user.id) as "total"
     FROM core_user
     WHERE lower(source) in ${sources}
+     AND (
+      SELECT max(created_at)
+      FROM core_action
+      WHERE core_action.status = 'complete'
+        AND core_action.user_id = core_user.id
+     ) > TIMESTAMP('${CUTOFF_DATE}')
     GROUP BY source
     ORDER BY total DESC
   `;
@@ -84,6 +116,12 @@ export const queriesForSources = (
   const TOTALS_QUERY = `
     SELECT count(distinct core_user.id) as "total"
     FROM core_user
+    WHERE (
+      SELECT max(created_at)
+      FROM core_action
+      WHERE core_action.status = 'complete'
+        AND core_action.user_id = core_user.id
+    ) > TIMESTAMP('${CUTOFF_DATE}')
   `;
 
   const queries = [

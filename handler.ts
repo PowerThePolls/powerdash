@@ -69,7 +69,7 @@ const handleUpdatePartners = async (event) => {
       (sheetId || "").length > 0 && (sources || "").length > 0
   );
 
-  const rate = 10;
+  const rate = 120;
   const interval = 360;
   const count = interval / rate;
   const today = new Date();
