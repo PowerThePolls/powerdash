@@ -58,12 +58,12 @@ functions:
       events:
         - schedule: rate(120 minutes)
 
-  publishPackage:
-    handler: handler.publishPackage
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - "s3:*"
-          - "cloudfront:*"
-        Resource:
-          - "*"
+    publishPackage:
+      handler: handler.publishPackage
+      iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - "s3:*"
+            - "cloudfront:*"
+          Resource:
+            - "*"
