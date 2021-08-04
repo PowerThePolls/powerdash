@@ -30,33 +30,33 @@ package:
     - service.json
 
 functions:
-   getZip:
-     handler: handler.handleGetZip
-     events:
-       - http:
-           path: zip
-           method: get
-           cors: true
+    getZip:
+      handler: handler.handleGetZip
+      events:
+        - http:
+            path: zip
+            method: get
+            cors: true
 
-   sendElectMail:
-     handler: handler.sendElectMail
-     events:
-       - http:
-           path: electmail
+    sendElectMail:
+       handler: handler.sendElectMail
+       events:
+         - http:
+             path: electmail
+             method: post
+             cors: true
+
+    updatePartner:
+      handler: handler.handleUpdatePartner
+      events:
+        - http:
+            path: sheet
            method: post
-           cors: true
 
-   updatePartner:
-     handler: handler.handleUpdatePartner
-     events:
-       - http:
-           path: sheet
-           method: post
-
-   updatePartners:
-     handler: handler.handleUpdatePartners
-     events:
-       - schedule: rate(120 minutes)
+    updatePartners:
+      handler: handler.handleUpdatePartners
+      events:
+        - schedule: rate(120 minutes)
 
   publishPackage:
     handler: handler.publishPackage
