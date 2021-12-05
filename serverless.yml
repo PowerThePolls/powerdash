@@ -55,8 +55,6 @@ functions:
 
     updatePartners:
       handler: handler.handleUpdatePartners
-      events:
-        - schedule: rate(120 minutes)
 
     publishPackage:
       handler: handler.publishPackage
