@@ -16,8 +16,6 @@ provider:
 package:
   exclude:
     - test_data/**
-  include:
-    - service.json
 
 functions:
   getZip:
