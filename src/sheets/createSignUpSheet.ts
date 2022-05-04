@@ -4,7 +4,7 @@ import getWorkSheets from "./getWorkSheets";
 import copySheet from "./copySheet";
 
 const createSignUpSheet = async (auth, destinationSpreadsheetId: string) => {
-  const templateSheet = process.env.TEMPALTE_PII || "";
+  const templateSheet = process.env.TEMPLATE_PII || "";
 
   const [{ sheetId: baseSheetId }] = await getWorkSheets(auth, templateSheet);
 

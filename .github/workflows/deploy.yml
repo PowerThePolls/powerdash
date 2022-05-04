@@ -48,7 +48,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           BASE_SHEET: ${{ secrets.BASE_SHEET }}
           TEMPLATE_BASE: ${{ secrets.TEMPLATE_BASE }}
-          TEMPALTE_PII: ${{ secrets.TEMPALTE_PII }}
+          TEMPLATE_PII: ${{ secrets.TEMPLATE_PII }}
           SLACK_HOOK: ${{ secrets.SLACK_HOOK }}
           ERROR_SLACK_HOOK: ${{ secrets.ERROR_SLACK_HOOK }}
           SS_AUTH_ID: ${{ secrets.SS_AUTH_ID }}
