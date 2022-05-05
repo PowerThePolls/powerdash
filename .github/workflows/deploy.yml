@@ -10,12 +10,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -24,11 +21,6 @@ jobs:
         uses: actions/setup-node@v1.4.4
         with:
           node-version: 12
-
-      - name: create service.json
-        run: echo $SERVICE_JSON > $GITHUB_WORKSPACE/service.json
-        env:
-          SERVICE_JSON: ${{ secrets.SERVICE_JSON }}
 
       - name: npm install dependencies
         run: npm install
@@ -41,18 +33,5 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          PTP_HOST: ${{ secrets.PTP_HOST }}
-          PTP_USER: ${{ secrets.PTP_USER }}
-          PTP_PASS: ${{ secrets.PTP_PASS }}
-          PTP_DB: ${{ secrets.PTP_DB }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          BASE_SHEET: ${{ secrets.BASE_SHEET }}
-          TEMPLATE_BASE: ${{ secrets.TEMPLATE_BASE }}
-          TEMPALTE_PII: ${{ secrets.TEMPALTE_PII }}
-          SLACK_HOOK: ${{ secrets.SLACK_HOOK }}
-          ERROR_SLACK_HOOK: ${{ secrets.ERROR_SLACK_HOOK }}
           SS_AUTH_ID: ${{ secrets.SS_AUTH_ID }}
           SS_AUTH_TOKEN: ${{ secrets.SS_AUTH_TOKEN }}
-          MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
-          SRC_AWS_ACCESS_KEY: ${{ secrets.SRC_AWS_ACCESS_KEY }}
-          SRC_AWS_SECRET_KEY: ${{ secrets.SRC_AWS_SECRET_KEY }}

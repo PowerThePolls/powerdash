@@ -12,3 +12,6 @@ service.json
 test-data/*
 .build/
 .DS_Store
+
+# ide
+.idea
