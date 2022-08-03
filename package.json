@@ -7,14 +7,8 @@
     "lint:fix": "tslint --fix --force --project ."
   },
   "dependencies": {
-    "aws-sdk": "^2.751.0",
-    "fetch-node": "0.0.1",
-    "googleapis": "^42.0.0",
     "mailgun-js": "^0.22.0",
-    "mysql": "^2.18.1",
-    "node-html-parser": "^1.2.20",
-    "sequelize-typescript": "^1.1.0",
-    "typeorm": "^0.2.25",
+    "node-fetch": "^2.3.0",
     "typescript": "^3.9.7"
   },
   "devDependencies": {

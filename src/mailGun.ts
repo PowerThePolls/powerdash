@@ -28,6 +28,7 @@ export const sendElectAdmin = async (jurisdiction, data) => {
         to,
       },
       (error, body) => {
+        // @ts-ignore
         error ? reject(error, body) : resolve(body);
       }
     );

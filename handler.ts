@@ -1,5 +1,5 @@
 import { getZip } from "./src/smartyStreet";
-import { installLatest } from "./src/install";
+import { sendElectAdmin } from "./src/mailGun";
 
 const handleGetZip = async (event) => {
   const { zipcode } = event.queryStringParameters;
@@ -16,11 +16,30 @@ const handleGetZip = async (event) => {
   };
 };
 
-const publishPackage = async (event) => {
-  await installLatest();
+const sendElectMail = async (event) => {
+  const { jurisdictionId, ...data } = JSON.parse(event.body);
+  let statusCode = 200;
+  let message = "Message sent";
+
+  try {
+    await sendElectAdmin(jurisdictionId, data);
+  } catch (e) {
+    console.error(e);
+    message = "Could not send";
+    statusCode = 422;
+  }
+
+  return {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
+    body: JSON.stringify({ message }),
+    statusCode,
+  };
 };
 
 module.exports = {
   handleGetZip,
-  publishPackage,
+  sendElectMail,
 };

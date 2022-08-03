@@ -12,6 +12,7 @@ provider:
   environment:
     SS_AUTH_ID: ${env:SS_AUTH_ID}
     SS_AUTH_TOKEN: ${env:SS_AUTH_TOKEN}
+    MAILGUN_API_KEY: ${env:MAILGUN_API_KEY}
 
 package:
   exclude:
@@ -24,4 +25,11 @@ functions:
       - http:
           path: zip
           method: get
+          cors: true
+  sendElectMail:
+    handler: handler.sendElectMail
+    events:
+      - http:
+          path: electmail
+          method: post
           cors: true
