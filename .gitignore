@@ -8,7 +8,7 @@ jspm_packages
 .env
 
 # google creds
-service.json
+*service.json
 test-data/*
 .build/
 .DS_Store
