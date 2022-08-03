@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 
 const mg = mailgun({
   apiKey: process.env.MAILGUN_API_KEY,
-  domain: "powerthepolls.org",
+  domain: "email.powerthepolls.org",
 });
 
 const getElectEmail = async (jurisdiction) => {
@@ -21,7 +21,7 @@ export const sendElectAdmin = async (jurisdiction, data) => {
   return await new Promise((resolve, reject) => {
     mg.messages().send(
       {
-        from: "Power the Polls <no-reply@powerthepolls.org>",
+        from: "Power the Polls <no-reply@email.powerthepolls.org>",
         subject: "Serving as a Poll Worker",
         template: "election-admin-email",
         "h:X-Mailgun-Variables": JSON.stringify(data),
