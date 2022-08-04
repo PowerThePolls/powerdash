@@ -11,9 +11,9 @@ const getElectEmail = async (jurisdiction) => {
   const resp = await fetch(
     `https://workelections.powerthepolls.org/wp-json/wp/v2/jurisdiction/${jurisdiction}/`
   );
-  const json = await resp.json();
-  console.log(JSON.stringify(json));
-  const email = json.acf.email;
+  const {
+    acf: { email },
+  } = await resp.json();
   console.log("email: ", email);
   return email;
 };
