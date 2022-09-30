@@ -7,7 +7,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   timeout: 600
   environment:
     SS_AUTH_ID: ${env:SS_AUTH_ID}
