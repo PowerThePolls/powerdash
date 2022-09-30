@@ -2,13 +2,13 @@
 
 Scripts deployed to lambda via serverless to sync partner data with google sheets - consists of two handlers
 
-## Deployment
+### Deployment
 
 ```shell
 serverless deploy
 ```
 
-## getZip in AWS
+### getZip in AWS
 
 ```shell
 curl -X GET https://smartystreet.powerthepolls.org/dev/zip?zipcode=20036
@@ -16,7 +16,10 @@ curl -X GET https://smartystreet.powerthepolls.org/dev/zip?zipcode=20036
 
 # Local Dev
 
-## getZip local
+* See `env-example` for required ENV variables.
+
+
+### getZip local
 
 ```shell
 serverless offline
@@ -25,6 +28,3 @@ serverless offline
 ```shell
 curl -X GET http://localhost:3000/dev/zip?zipcode=20036
 ```
-
-
-See `env-example` for required ENV variables.
