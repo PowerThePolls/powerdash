@@ -1,6 +1,8 @@
 {
   "main": "handler.js",
   "scripts": {
+    "start": "serverless offline",
+    "deploy": "serverless deploy",
     "clean": "rm -rf .build && npm run prettier && npm run lint:fix",
     "prettier": "prettier --write .",
     "lint": "tslint --project .",
