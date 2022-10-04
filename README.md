@@ -16,8 +16,7 @@ curl -X GET https://smartystreet.powerthepolls.org/dev/zip?zipcode=20036
 
 # Local Dev
 
-* See `env-example` for required ENV variables.
-
+- See `env-example` for required ENV variables.
 
 ### getZip local
 
